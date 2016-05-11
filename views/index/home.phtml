@@ -1,0 +1,65 @@
+    <div class="col-xs-12 col-sm-8 col-md-8" id="panelHome">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">Sistema de informaci&oacute;n de administraci&oacute;n acad&eacute;mica</h3>
+            </div>
+            <div class="panel-body">
+                <p>
+                    El sistema de informaci&oacute;n de administraci&oacute;n acad&eacute;mica de los docentes permite
+                    la administraci&oacute;n y gesti&oacute;n de los procedimientos ac&aacute;demicos de la universidad 
+                    Sim&oacute;n Bolivar. Los procesos sistematizados corresponden a la gest&oacute;n de la informaci&oacute;n
+                    acad&eacute;mica, portal docente y educaci&oacute;n continua.
+                    <br><br>
+                    El sistema tiene como propisto facilitar el registro de informaci&oacute;n correspondiente a datos 
+                    b&aacute;sicos, experiencia laboral, estudios realizados, entre otros, que permitan mantener un registro actualizado
+                    de los docentes de la universisdad.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <?php 
+        if (!Session::get('autenticado')) {
+    ?>
+    <div class="col-xs-12 col-sm-4 col-md-4">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">Iniciar sesi&oacute;n</h3>
+            </div>
+            <div class="panel-body">
+                
+                <form role="form" action="<?php echo BASE_URL; ?>login/" method="post">
+                    
+                    <input type="hidden" name="enviar" value="1" />
+                    
+                    <div class="form-group">
+                        <input type="text" name="usuario" class="form-control" placeholder="Nombre de usuario" value="<?php if (isset($_POST["usuario"])) echo $_POST["usuario"]; ?>">
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="password" name="pass" class="form-control" placeholder="Contrase&ntilde;a">
+                    </div>
+                    
+                   <!-- <div class="checkbox" style="margin: 1.1em 0;">
+                        <label>
+                            <input type="checkbox" value="recordarme" > Recordarme
+                        </label>
+                    </div>-->
+                    
+                    <input type="submit" class="btn btn-success btn-block" value="Iniciar sesi&oacute;n" />
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+    <?php
+        }
+        else
+        {?>
+        <script>
+            redimensionarHome();
+        </script>
+     <?php     
+        }
+    ?>
+</div>

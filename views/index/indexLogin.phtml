@@ -1,0 +1,63 @@
+<!--<hr>-->
+
+<div class="col-md-12" >
+	
+
+<?php $_item_style='';$_item_menu=''; ?>
+<?php if(isset($_layoutParams['menu'])){ ?>
+<?php for($i = 0; $i < count($_layoutParams['menu']); $i++){ ?>
+
+<?php if (array_key_exists('sub', $_layoutParams['menu'][$i])) { 
+	$_item_style.= 'dropdown'; 
+	?>
+	<div class="menu-ico col-xs-12 col-sm-6 col-md-4 col-lg-4">
+	<div class="dropdown btn-block ">
+		<a class="btn btn-primary btn-lg btn-block dropdown-toggle" lass="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" href="#"><?php echo $_layoutParams['menu'][$i]['ico']; ?><?php echo $_layoutParams['menu'][$i]['titulo']; ?><span class="fa arrow"></span></a>
+		<ul class="dropdown-menu" role="menu">
+			<?php for($j = 0; $j < count($_layoutParams['menu'][$i]['sub']); $j++){ ?>
+			<?php 
+			if($item && $_layoutParams['menu'][$i]['sub'][$j]['id'] == $item ){ 
+				$_item_style = 'active'; 
+			} else {
+				$_item_style = '';
+			}
+			?>
+			<li>
+				<a  class="<?php echo $_item_style; ?>" href="<?php echo $_layoutParams['menu'][$i]['sub'][$j]['enlace']; ?>"><?php  echo $_layoutParams['menu'][$i]['sub'][$j]['titulo']; ?></a>
+			</li>
+			<?php } ?>
+		</ul>
+</div>
+	</div>
+
+	<?php }else{  ?>
+	<div class="menu-ico col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<a class="btn btn-primary btn-lg btn-block btn-group" href="<?php echo $_layoutParams['menu'][$i]['enlace']; ?>"><?php echo $_layoutParams['menu'][$i]['ico']; ?><?php  echo $_layoutParams['menu'][$i]['titulo']; ?></a>
+	</div>
+	
+	<?php } ?>
+	<?php } ?>
+	<?php } ?>
+	
+	<div class="menu-ico col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<a class="btn btn-primary btn-lg btn-block btn-group" href="<?php echo BASE_URL; ?>login/cerrar/"><i class="fa fa-sign-out fa-fw"></i> Cerrar Sesion</a>
+	</div>
+
+	
+	</div>
+
+	<style type="text/css">
+	.menu-ico{
+		margin-top: 20px;
+		text-align: center;
+	}
+	.menu-ico .fa {
+		display: block;
+		text-align: center;
+		margin: 0 auto;
+		font-size: 60px;
+	}
+	.menu-ico:hover .fa{
+		color: #fff;
+	}
+	</style>

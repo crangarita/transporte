@@ -1,0 +1,383 @@
+<div class="panel panel-primary">
+	  <div class="panel-heading">
+			<h3 class="panel-title"><?php echo ucwords(strtolower($this->_presentRequest->getMetodo())); ?></h3>
+	  </div>
+	  <div class="panel-body">
+
+	    <form role="form" class="form-horizontal" method="post" enctype="multipart/form-data">
+
+	    	<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Placa: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="placa" class="form-control required" value="<?php if(isset($this->dato)){ echo $this->dato->getPlaca();} ?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Marca: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<?php $marca = ''; ?>
+				<?php if(isset($this->dato)){ $marca = $this->dato->getMarca()->getId(); } ?>
+					<?php echo $this->combobox("marca", "Seleccione...", $this->marcas, $marca, "getId", "getDescripcion", "class='form-control required show-tick' data-live-search='true' ","getDescripcion"); ?>
+
+					
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Tipo: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<?php $tipo = ''; ?>
+				<?php if(isset($this->dato)){ $tipo = $this->dato->getTipo()->getId(); } ?>
+					<?php echo $this->combobox("tipo", "Seleccione...", $this->tipos, $tipo, "getId", "getDescripcion", "class='form-control required show-tick' data-live-search='true' ","getDescripcion"); ?>
+
+					
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Tipo Combustible: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<?php $tipocombustible = ''; ?>
+				<?php if(isset($this->dato)){ if ($this->dato->getCombustible()) $tipocombustible = $this->dato->getCombustible()->getId(); } ?>
+					<?php echo $this->combobox("tipocombustible", "Seleccione...", $this->tipocombustibles, $tipocombustible, "getId", "getDescripcion", "class='form-control required show-tick' data-live-search='true' ","getDescripcion"); ?>
+
+					
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Radio de Acción: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<?php $radio = ''; ?>
+				<?php if(isset($this->dato)){ $radio = $this->dato->getRadio()->getId(); } ?>
+					<?php echo $this->combobox("radio", "Seleccione...", $this->radios, $radio, "getId", "getDescripcion", "class='form-control required show-tick' data-live-search='true' ","getDescripcion"); ?>
+
+					
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Num Motor: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="nummotor" class="form-control required" value="<?php if(isset($this->dato)){ echo $this->dato->getNummotor();} ?>" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Linea: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="linea" class="form-control required" value="<?php if(isset($this->dato)){ echo $this->dato->getLinea();} ?>" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Num Chasis: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="numchasis" class="form-control required" value="<?php if(isset($this->dato)){ echo $this->dato->getNumchasis();} ?>" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Carroceria: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="tipocarroceria" class="form-control required" value="<?php if(isset($this->dato)){ echo $this->dato->getTipocarroceria();} ?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Cilindraje: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="cilindraje" class="form-control required" value="<?php if(isset($this->dato)){ echo $this->dato->getCilindraje();} ?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Modelo: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="modelo" class="form-control required" value="<?php if(isset($this->dato)){ echo $this->dato->getModelo();} ?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Capacidad: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="capacidad" class="form-control required" value="<?php if(isset($this->dato)){ echo $this->dato->getCapacidad();} ?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Area: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="area" class="form-control required" value="<?php if(isset($this->dato)){ echo $this->dato->getArea();} ?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Servicio: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="servicio" class="form-control required" value="<?php if(isset($this->dato)){ echo $this->dato->getServicio();} ?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Numero Puertas: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="numpuertas" class="form-control required" value="<?php if(isset($this->dato)){ echo $this->dato->getNumpuertas();} ?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Numero Licencia: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="numlicencia" class="form-control required" value="<?php if(isset($this->dato)){ echo $this->dato->getNumlicencia();} ?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Numero Tarjeta Operacional: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="numtarjoperacional" class="form-control required" value="<?php if(isset($this->dato)){ echo $this->dato->getNumtarjoperacional();} ?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Fecha Venc Tarjeta Operacional: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="fecvenctarjoperacional" class="form-control datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/aaaa" value="<?php if(isset($this->dato)){ if($this->dato->getFecvenctarjoperacional()) { echo $this->dato->getFecvenctarjoperacional()->format('d/m/Y');} } ?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Fecha Venc Tecnomecanico: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="fecvenctecnomecanico" class="form-control datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/aaaa" value="<?php if(isset($this->dato)){ if($this->dato->getFecvenctecnomecanico()) { echo $this->dato->getFecvenctecnomecanico()->format('d/m/Y');} } ?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+                    <label>Observaci&oacute;n:</label>
+                    <textarea name="observacion"  class="form-control funciones"  maxlength="400" rows = "4">
+                    	<?php if(isset($this->dato)){ echo $this->dato->getObservacion();} ?>
+                    </textarea>
+                </div>
+
+
+			<p class="text-right comentario">
+				Los campos marcados con <span class="span">*</span> son obligatorios.
+			</p>
+
+			<button type="submit" class="btn btn-primary" ><?php echo ucwords($this->_presentRequest->getMetodo()); ?> </button> 
+			<a class="btn btn-primary" href="<?php echo BASE_URL.$this->_presentRequest->getControlador().'/'; ?>">Listado</a>
+
+		</form>
+
+	  </div>
+</div>
+
+<?php if(isset($this->dato) && count($this->dato)){ ?>
+
+<div class="panel panel-primary">
+	  <div class="panel-heading">
+			<h3 class="panel-title">Mantenimientos</h3>
+	  </div>
+	  <div class="panel-body">
+
+	    <form role="form" class="form-horizontal" method="post" enctype="multipart/form-data">
+			<table class="table table-striped table-bordered table-hover" id="dataTablesAdvanced">
+				<thead>
+					<tr>
+						
+						<th>Fecha</th>
+						<th>Tipo</th>
+						<th>Frecuencia</th>
+						<th>Observacion</th>
+						<th class="no-sort" >Accion</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($this->dato->getMantenimientos() as $key => $dato) { ?>
+						<tr>
+							
+							<td><?php echo $dato->getFecha()->format('d/m/Y'); ?></td>
+							<td><?php echo $dato->getTipo() != 1 ?  "Correctivo" : "Preventivo" ;?></td>
+							<td><?php echo $dato->getFrecuencia()->getDescripcion(); ?></td>
+							<td>&nbsp;</td>
+							<td class="text-center">
+								<a title="Asignar" class="asignarV" vacuna="<?php echo $dato->getId(); ?>" ><i class="fa fa-calendar"></i></a>
+								<!--<a title="Eliminar" href="<?php echo BASE_URL.$this->_presentRequest->getControlador().'/'; ?>desactivarVacuna/<?php echo $vehiculo; ?>/<?php echo $dato->getId(); ?>/"><i class="fa fa-times"></i></a>-->
+							</td>
+						</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+			<a class="btn btn-primary" id="mantenimiento" href="<?php echo BASE_URL.'mantenimiento/agregar/'.$this->dato->getId().'/'; ?>">Registrar Mantenimiento</a>
+		</form>
+
+	  </div>
+</div>
+
+
+
+<?php } ?>
+<!--
+<div class="modal fade" id="modal-vacuna">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Agregar Vacuna</h4>
+			</div>
+			<div class="modal-body">
+				<form role="form" class="form-horizontal" method="post" enctype="multipart/form-data" action="<?php echo BASE_URL.'mascota/agregarVacuna/' ?>" id="form-vacuna">
+					<input type="hidden" name="mascota" value="<?php if(isset($this->dato)){ echo $this->dato->getId();} ?>">
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Vacuna: </label>
+						<div class="col-xs-12 col-sm-9 col-lg-9">
+							<?php echo $this->combobox("vacuna", "Seleccione...", $this->vacunas, "", "getId", "getDescripcion", "class='form-control required show-tick' data-live-search='true' ","getDescripcion"); ?>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Fecha Program: </label>
+						<div class="col-xs-12 col-sm-9 col-lg-9">
+							<input name="fechaProg" value="" class="form-control fechadatepicker required" data-date-format="dd/mm/yyyy" placeholder="dd/mm/aaaa" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Observacion: </label>
+						<div class="col-xs-12 col-sm-9 col-lg-9">
+							<textarea class="form-control required" name="observacion"></textarea>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-primary" id="guardarVacuna" >Guardar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal-servicio">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Agregar Servicio</h4>
+			</div>
+			<div class="modal-body">
+				<form role="form" class="form-horizontal" method="post" enctype="multipart/form-data" action="<?php echo BASE_URL.'mascota/agregarServicio/' ?>" id="form-servicio">
+					<input type="hidden" name="mascota" value="<?php if(isset($this->dato)){ echo $this->dato->getId();} ?>">
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Servicio: </label>
+						<div class="col-xs-12 col-sm-9 col-lg-9">
+							<?php echo $this->combobox("servicio", "Seleccione...", $this->servicios, "", "getId", "getDescripcion", "class='form-control required show-tick' data-live-search='true' ","getDescripcion"); ?>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Fecha Program: </label>
+						<div class="col-xs-12 col-sm-9 col-lg-9">
+							<input name="fechaProg" value="" class="form-control fechadatepicker required" data-date-format="dd/mm/yyyy" placeholder="dd/mm/aaaa" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Observacion: </label>
+						<div class="col-xs-12 col-sm-9 col-lg-9">
+							<textarea class="form-control required" name="observacion"></textarea>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-primary" id="guardarServicio" >Guardar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal-asignar-vacuna">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Fecha Vacuna</h4>
+			</div>
+			<div class="modal-body">
+				<form role="form" class="form-horizontal" method="post" enctype="multipart/form-data" action="<?php echo BASE_URL.'mascota/asignarVacuna/' ?>" id="form-vacunaF">
+					<input type="hidden" name="mascota" value="<?php if(isset($this->dato)){ echo $this->dato->getId();} ?>">
+					<input type="hidden" name="vacuna" value="" id="id-vacuna" >
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Fecha: </label>
+						<div class="col-xs-12 col-sm-9 col-lg-9">
+							<input name="fechaRealVacuna" value="" class="form-control fechadatepicker required" data-date-format="dd/mm/yyyy" placeholder="dd/mm/aaaa" />
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-primary" id="guardarVacunaF" >Guardar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal-asignar-servicio">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Fecha Servicio</h4>
+			</div>
+			<div class="modal-body">
+				<form role="form" class="form-horizontal" method="post" enctype="multipart/form-data" action="<?php echo BASE_URL.'mascota/asignarServicio/' ?>" id="form-servicioF">
+					<input type="hidden" name="mascota" value="<?php if(isset($this->dato)){ echo $this->dato->getId();} ?>">
+					<input type="hidden" name="servicio" value="" id="id-servicio" >
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Fecha: </label>
+						<div class="col-xs-12 col-sm-9 col-lg-9">
+							<input name="fechaRealServicio" value="" class="form-control fechadatepicker required" data-date-format="dd/mm/yyyy" placeholder="dd/mm/aaaa" />
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-primary" id="guardarServicioF" >Guardar</button>
+			</div>
+		</div>
+	</div>
+</div>
+-->
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$('#vacuna').click(function(event) {
+			$('#modal-vacuna').modal();
+			$('#guardarVacuna').click(function(event) {
+				$('#form-vacuna').submit();
+			});		
+		});
+		$('#servicio').click(function(event) {
+			$('#modal-servicio').modal();
+			$('#guardarServicio').click(function(event) {
+				$('#form-servicio').submit();
+			});		
+		});
+		$(".asignarV").click(function(event) {
+			$("#id-vacuna").val($(this).attr('vacuna'));
+			$("#modal-asignar-vacuna").modal();
+			$('#guardarVacunaF').click(function(event) {
+				$('#form-vacunaF').submit();
+			});
+		});
+		$(".asignarS").click(function(event) {
+			$("#id-servicio").val($(this).attr('servicio'));
+			$("#modal-asignar-servicio").modal();
+			$('#guardarServicioF').click(function(event) {
+				$('#form-servicioF').submit();
+			});
+		});
+	});
+</script>

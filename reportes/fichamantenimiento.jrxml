@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fichamantenimiento" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d71f8ac5-00d8-4935-883c-a62648b7abd3">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="25"/>
+	<queryString>
+		<![CDATA[SELECT
+  `tipo`.`descripcion` AS `tipo`,
+  `marca`.`descripcion` AS `marca`,
+  `tipocombustible`.`descripcion` AS `tipocombustible`,
+  `radioaccion`.`descripcion` AS `radio`,
+  `vehiculo`.`placa`,
+  `vehiculo`.`nummotor`,
+  `vehiculo`.`numchasis`,
+  `vehiculo`.`linea`,
+  `vehiculo`.`cilindraje`,
+  `vehiculo`.`capacidad`,
+  `vehiculo`.`servicio`,
+  `vehiculo`.`modelo`,
+  `vehiculo`.`numpuertas`,
+  `vehiculo`.`numtarjoperacional`,
+  `vehiculo`.`fecvenctarjoperacional`,
+  `vehiculo`.`fecvenctecnomecanico`,
+  `vehiculo`.`feciniciolabores`,
+  `vehiculo`.`observacion`,
+  `mantenimiento`.`fecha`,
+  `frecuencia`.`descripcion` as frecuencia,
+  `mantenimiento`.`observaciones`,
+  `mantenimiento`.`conductor`,
+  `mantenimiento`.`revisor`,
+  case when `mantenimiento`.`tipo` = '1' then 'Preventivo' else 'Correctivo' end as tipomantenimiento,
+  `mantenimiento`.`reparacion`,
+  `mantenimiento`.`falla`,
+  `itemmantenimientoprev`.`estado`,
+  `itemrevision`.`descripcion` as item
+FROM
+  `marca`
+  RIGHT OUTER JOIN `vehiculo` ON (`marca`.`id` = `vehiculo`.`marca`)
+  LEFT OUTER JOIN `tipo` ON (`vehiculo`.`tipo` = `tipo`.`id`)
+  LEFT OUTER JOIN `radioaccion` ON (`vehiculo`.`radio` = `radioaccion`.`id`)
+  LEFT OUTER JOIN `tipocombustible` ON (`vehiculo`.`combustible` = `tipocombustible`.`id`)
+  INNER JOIN `mantenimiento` ON (`vehiculo`.`id` = `mantenimiento`.`vehiculo`)
+  INNER JOIN `frecuencia` ON (`mantenimiento`.`frecuencia` = `frecuencia`.`id`)
+  LEFT OUTER JOIN `itemmantenimientoprev` ON (`mantenimiento`.`id` = `itemmantenimientoprev`.`mantenimiento`)
+  LEFT OUTER JOIN `itemfrecuencia` ON (`itemfrecuencia`.`id` = `itemmantenimientoprev`.`itemfrecuencia`)
+  LEFT OUTER JOIN `itemrevision` ON (`itemfrecuencia`.`item` = `itemrevision`.`id`)
+WHERE
+  `mantenimiento`.`id` = 1]]>
+	</queryString>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="marca" class="java.lang.String"/>
+	<field name="tipocombustible" class="java.lang.String"/>
+	<field name="radio" class="java.lang.String"/>
+	<field name="placa" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nummotor" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numchasis" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="linea" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cilindraje" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="capacidad" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="servicio" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="modelo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numpuertas" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numtarjoperacional" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecvenctarjoperacional" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecvenctecnomecanico" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="feciniciolabores" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="observacion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="frecuencia" class="java.lang.String"/>
+	<field name="observaciones" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="conductor" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="revisor" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipomantenimiento" class="java.lang.String"/>
+	<field name="reparacion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="falla" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="estado" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="item" class="java.lang.String"/>
+	<variable name="placa_1" class="java.lang.Integer" resetType="Page" calculation="Count">
+		<variableExpression><![CDATA[$F{placa}]]></variableExpression>
+	</variable>
+	<variable name="placa_2" class="java.lang.Integer" resetType="Page" calculation="Count">
+		<variableExpression><![CDATA[$F{placa}]]></variableExpression>
+	</variable>
+	<group name="Placa">
+		<groupExpression><![CDATA[$F{placa}]]></groupExpression>
+		<groupHeader>
+			<band height="98">
+				<staticText>
+					<reportElement x="29" y="78" width="302" height="20" uuid="e0cdf950-2bf2-4d56-808c-a5f065ce42ab"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Descripción del Item]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="403" y="78" width="84" height="20" uuid="019dbcd6-df79-41b0-8d97-3af993c1ad5b"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Aceptable]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="487" y="78" width="84" height="20" uuid="ea2f2623-5c10-4c78-836f-b9d0ffc166ab"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[No Aceptable]]></text>
+				</staticText>
+				<line>
+					<reportElement x="0" y="97" width="572" height="1" uuid="a86eed65-67e3-4ff0-b15e-99251c2c263e"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="0" y="77" width="572" height="1" uuid="9c749f35-5aa6-4f16-af02-7a8bea0c7c55"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement x="67" y="0" width="100" height="20" uuid="10c9ff09-a6eb-4591-b250-3b915dd397d9"/>
+					<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="315" y="0" width="100" height="20" uuid="2f90799f-839f-4fa8-ba0c-44dbd255bd27"/>
+					<textFieldExpression><![CDATA[$F{conductor}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="315" y="29" width="100" height="20" uuid="cc0f5471-528f-449f-8474-2be08613ba73"/>
+					<textFieldExpression><![CDATA[$F{revisor}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="67" y="29" width="153" height="20" uuid="21c969f7-1291-40bd-ba30-e9ca0ed4cf87"/>
+					<textFieldExpression><![CDATA[$F{tipomantenimiento}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="67" y="49" width="100" height="20" uuid="b732a522-1f60-4d4a-8b45-f37783cb4520"/>
+					<textFieldExpression><![CDATA[$F{frecuencia}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="56">
+				<textField isBlankWhenNull="true">
+					<reportElement x="67" y="3" width="500" height="50" uuid="bea28129-11f9-492d-b7b2-c9ac2b5dac3d"/>
+					<textFieldExpression><![CDATA[$F{falla}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="3" width="62" height="20" uuid="96143024-d94d-426d-8072-c8ac79332342"/>
+					<text><![CDATA[Falla:]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement mode="Transparent" x="62" y="3" width="510" height="50" uuid="167ac54c-0194-47f5-825f-5a5a96b53d28"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</rectangle>
+			</band>
+			<band height="56">
+				<textField isBlankWhenNull="true">
+					<reportElement x="67" y="3" width="500" height="50" uuid="bccc099b-e24f-42e8-a721-17523260e1cb"/>
+					<textFieldExpression><![CDATA[$F{reparacion}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="3" width="62" height="20" uuid="bee72017-cca0-4a81-aa1b-48872327bebb"/>
+					<text><![CDATA[Reparación:]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement mode="Transparent" x="62" y="3" width="510" height="50" uuid="88d4c38a-ef9c-443a-a1dc-b01779e1d19c"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</rectangle>
+			</band>
+			<band height="68">
+				<textField isBlankWhenNull="true">
+					<reportElement x="67" y="3" width="500" height="50" uuid="c8987e63-6f42-4c43-b982-09009cb1f7cc"/>
+					<textFieldExpression><![CDATA[$F{observaciones}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="3" width="62" height="20" uuid="13aa43f0-4044-4213-8cc4-4c1d9d4d10bc"/>
+					<text><![CDATA[Observación:]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement mode="Transparent" x="62" y="3" width="510" height="50" uuid="a81dfb5d-cb17-4623-bc18-e6f0886bed75"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</rectangle>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="94" splitType="Stretch">
+			<staticText>
+				<reportElement x="379" y="60" width="66" height="34" uuid="4f13413a-cc1b-4167-b550-63e40674db0d"/>
+				<textElement>
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Placa:]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="125" height="86" uuid="8e8dadb6-7a00-4fda-8661-a4c1002e0e6c"/>
+				<imageExpression><![CDATA["logo.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="145" y="37" width="394" height="20" uuid="adda7793-cecd-4ef5-90fc-fbe66a18b101"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FICHA DEL VEHICULO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="445" y="60" width="95" height="34" uuid="a5fcb070-ec03-4a6b-96e4-9737822acb7a"/>
+				<textElement textAlignment="Right">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{placa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="145" y="17" width="394" height="20" uuid="065f8797-c1fb-4672-b52e-39d35c95a7fc"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[TRANSPORTES RISARALDA DEL NORTE S.A]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField>
+				<reportElement x="29" y="0" width="374" height="16" uuid="f50875c6-eccc-4160-bb05-29d74af3c8f7"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{item}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="0" width="25" height="16" uuid="84f1e02f-ebb4-4895-9963-51c62cf4589b"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{placa_1}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="15" width="572" height="1" uuid="4387724a-dc2e-433e-b732-72ed0a2294b2"/>
+				<graphicElement>
+					<pen lineWidth="0.25"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="403" y="0" width="84" height="16" uuid="64ab3d2a-7bea-45f4-9d57-3d319e29c52a">
+					<printWhenExpression><![CDATA[$F{estado}.intValue()==1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="487" y="0" width="84" height="16" uuid="a2ac386f-ab5e-4760-8d4c-f7ddd78d9f42">
+					<printWhenExpression><![CDATA[$F{estado}.intValue()==2]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

@@ -1,0 +1,110 @@
+<div class="panel panel-primary">
+	  <div class="panel-heading">
+			<h3 class="panel-title">Consultar</h3>
+	  </div>
+	  <div class="panel-body">
+
+	    <form role="form" class="form-horizontal" method="post" enctype="multipart/form-data">
+
+	    	<input type="hidden" name="consultar" value="1">
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Fecha Inicio: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="fechaIni" value="<?php if(isset($_POST['fechaIni'])) echo $_POST['fechaIni'] ?>" class="form-control fechadatepicker required" data-date-format="dd/mm/yyyy" placeholder="dd/mm/aaaa" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Fecha Fin: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="fechaFin" value="<?php if(isset($_POST['fechaFin'])) echo $_POST['fechaFin'] ?>" class="form-control fechadatepicker required" data-date-format="dd/mm/yyyy" placeholder="dd/mm/aaaa" />
+				</div>
+			</div>
+
+			<p class="text-right comentario">
+				Los campos marcados con <span class="span">*</span> son obligatorios.
+			</p>
+
+			<button type="submit" class="btn btn-primary" >Consultar</button> 
+
+		</form>
+
+	  </div>
+</div>
+
+<?php if(isset($this->vacunas) && count($this->vacunas)){ ?>
+
+<div class="panel panel-primary">
+	  <div class="panel-heading">
+			<h3 class="panel-title">Vacunas</h3>
+	  </div>
+	  <div class="panel-body">
+
+	    <form role="form" class="form-horizontal" method="post" enctype="multipart/form-data">
+			<table class="table table-striped table-bordered table-hover" id="dataTablesAdvanced">
+				<thead>
+					<tr>
+						<th>Cliente</th>
+<th>Teléfono</th>
+						<th>Mascota</th>
+						<th>Vacuna</th>
+						<th>Fecha Programada</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($this->vacunas as $key => $dato) { ?>
+						<tr>
+							<td><?php echo $dato->getMascota()->getCliente()->getNombre(); ?></td>
+<td><?php echo $dato->getMascota()->getCliente()->getTelefono(); ?></td>
+							<td><?php echo $dato->getMascota()->getNombre(); ?></td>
+							<td><?php echo $dato->getVacuna()->getDescripcion(); ?></td>
+							<td><?php echo $dato->getFechaProg()->format('d/m/Y'); ?></td>
+						</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+		</form>
+
+	  </div>
+</div>
+
+<?php } ?>
+
+<?php if(isset($this->servicios) && count($this->servicios)){ ?>
+
+<div class="panel panel-primary">
+	  <div class="panel-heading">
+			<h3 class="panel-title">Servicios</h3>
+	  </div>
+	  <div class="panel-body">
+
+	    <form role="form" class="form-horizontal" method="post" enctype="multipart/form-data">
+			<table class="table table-striped table-bordered table-hover" id="dataTablesAdvanced">
+				<thead>
+					<tr>
+						<th>Cliente</th>
+<th>Teléfono</th>
+						<th>Mascota</th>
+						<th>Servicio</th>
+						<th>Fecha Programada</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($this->servicios as $key => $dato) { ?>
+						<tr>
+							<td><?php echo $dato->getMascota()->getCliente()->getNombre(); ?></td>
+<td><?php echo $dato->getMascota()->getCliente()->getTelefono(); ?></td>
+							<td><?php echo $dato->getMascota()->getNombre(); ?></td>
+							<td><?php echo $dato->getServicio()->getDescripcion(); ?></td>
+							<td><?php echo $dato->getFechaProg()->format('d/m/Y'); ?></td>
+						</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+		</form>
+
+	  </div>
+</div>
+
+<?php } ?>
