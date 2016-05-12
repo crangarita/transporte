@@ -10,12 +10,7 @@ class mantenimientoController extends Controller
         $this->_frecuencia = $this->loadModel('frecuencia');
         $this->_vehiculo = $this->loadModel('vehiculo');
         $this->_itemfrecuencia = $this->loadModel('itemfrecuencia');
-        //$this->_cliente = $this->loadModel('cliente');
-        //$this->_mascota = $this->loadModel('mascota');
-        //$this->_vacuna = $this->loadModel('vacuna');
-        //$this->_servicio = $this->loadModel('servicio');
-        //$this->_vacunacion = $this->loadModel('vacunacion');
-        //$this->_servicioMascota = $this->loadModel('serviciomascota');
+        $this->_itemmantenimientoprev = $this->loadModel('itemmantenimientoprev');
     }
     
     public function index()
@@ -84,14 +79,10 @@ class mantenimientoController extends Controller
     public function agregar($id=0)
     {
         $this->_view->titulo = ucwords($this->_presentRequest->getControlador()).' :: Agregar';
-        
-        
         $this->_view->frecuencias = $this->_frecuencia->resultList();
         $this->_view->itemfrecuencias = $this->_itemfrecuencia->dql("SELECT i FROM Entities\Itemfrecuencia i 
             JOIN i.frecuencia f 
             WHERE f.id =:idFrec", array('idFrec' => '2'));
-
-
         $this->_view->vehiculo = $this->_vehiculo->get($id);
 
         /*
@@ -144,15 +135,29 @@ class mantenimientoController extends Controller
         $this->_model->getInstance()->setRevisor($this->getTexto('revisor'));
         $this->_model->getInstance()->setConductor($this->getTexto('conductor'));
         $this->_model->getInstance()->setVehiculo($this->_vehiculo->get($this->getInt('vehiculo')));
-        $this->_model->getInstance()->setFalla($this->getTexto('falla'));
-        $this->_model->getInstance()->setReparacion($this->getTexto('reparacion'));
-
-
-
-
         
+        if($this->getInt('tipo') == 2){
+            $this->_model->getInstance()->setFalla($this->getTexto('falla'));
+            $this->_model->getInstance()->setReparacion($this->getTexto('reparacion'));
+            $this->_model->save();
+        }else{
+            $temp = $this->_itemfrecuencia->findBy(array('frecuencia' => $this->getInt("frecuencia")));
+            $this->_model->save();
+            foreach ($temp as $key => $value) {
+                $this->_itemmantenimientoprev = $this->loadModel('itemmantenimientoprev');
+                $this->_itemmantenimientoprev->getInstance()->setMantenimiento($this->_model->getInstance()); 
+                $this->_itemmantenimientoprev->getInstance()->setItemFrecuencia($this->_itemfrecuencia->get($value->getId())); 
+                $valor = "radio".$value->getId();
+               // echo $valor;
+                $this->_itemmantenimientoprev->getInstance()->setEstado($this->getPostParam($valor));
+                //exit;
+                //var_dump($this->_itemmantenimientoprev->getInstance());
+                //exit;
+                $this->_itemmantenimientoprev->save();
+            }
+        }
+
         if($new){
-            $this->_model->save(); 
             Session::set('mensaje','Registro Creado con Exito.');
         }else{
             $this->_model->update(); 
@@ -160,6 +165,24 @@ class mantenimientoController extends Controller
         }
 
         $this->redireccionar($this->_presentRequest->getControlador().'/');
+    }
+
+    public function cargarItem(){
+
+        header('Content-type: application/json');
+        $frecuencia = $this->getInt("frecuencia");
+        $arrayRta = array();
+        $array = array();
+        $arrayInt = array();
+        $temp = $this->_itemfrecuencia->findBy(array("frecuencia" => $frecuencia));
+        foreach ($temp as $key => $value) {
+            $array['id'] = $value->getId();
+            $array['descripcion'] = $value->getItem()->getDescripcion();
+            $arrayInt[] = $array;
+        }
+        $arrayRta['datos'] = $arrayInt;
+        echo json_encode($arrayRta);
+        exit; 
     }
 
 }

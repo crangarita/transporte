@@ -15,7 +15,6 @@ class Itemfrecuencia
 {
 
 
-
     /**
      * @var integer
      *
