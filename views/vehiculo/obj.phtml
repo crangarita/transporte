@@ -156,23 +156,7 @@
                     </div>
             </div>
 
-            <?php if($this->metodo == "editar"){ ?>
-            <div class="form-group">
-				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Imagen 1: </label>
-	            <div class="col-xs-12 col-sm-9 col-lg-9">
-                	<input type="file" name="imagen1" class="form-control"  />
-                </div>
-            </div>
-
-            <div class="form-group">
-				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Imagen 2: </label>
-	            <div class="col-xs-12 col-sm-9 col-lg-9">
-                	<input type="file" name="imagen2" class="form-control"  />
-                </div>
-            </div>
-            <?php } ?>
-
-			<p class="text-right comentario">
+            <p class="text-right comentario">
 				Los campos marcados con <span class="span">*</span> son obligatorios.
 			</p>
 
@@ -183,6 +167,47 @@
 
 	  </div>
 </div>
+<?php if($this->metodo == "editar"){ ?>
+<div class="panel panel-primary">
+	  <div class="panel-heading">
+			<h3 class="panel-title">Imagenes</h3>
+	  </div>
+	  <div class="panel-body">
+            <form role="form" class="row" method="post" action="" enctype="multipart/form-data" id="formImagen">
+	            <input type="hidden" name="id" value="<?php echo $this->dato->getId() ?>" />
+	            <div class="form-group col-xs-6">
+	                <label>Seleccione Archivo: </label> 
+	                <input type="file" name="imagen" class="form-control" />
+	            </div>
+	            <div class="form-group col-xs-6">
+	                <label>Imagen: </label> 
+	                <select name="tipoImagen" class="form-control">
+	                	<option value="">Seleccione...</option>
+	                	<option value="1">Imagen 1</option>
+	                	<option value="2">Imagen 2</option>
+	                </select>
+	            </div>
+	            <div class="form-group col-xs-12">
+	                <a class="btn btn-primary btn-sm btn-block" id="subirImagen">Subir Imagen</a>
+	            </div>
+	            <div class="form-group col-xs-6">
+	            	<?php if($this->dato->getImagen1()){ ?>
+	            		<label>Imagen 1 </label> 
+	            		<img src="<?php echo BASE_URL."public/img/vehiculos/".$this->dato->getPlaca()."_1.".$this->dato->getImagen1() ?>" class="img-responsive" alt="Image">
+	            		<a class="btn btn-danger btn-sm btn-block eliminarImagen" id="<?php echo $this->dato->getId() ?>" imagen="1">Eliminar Imagen</a>
+	            	<?php } ?>
+	            </div>
+	            <div class="form-group col-xs-6">
+	            	<?php if($this->dato->getImagen2()){ ?>
+	            		<label>Imagen 2 </label> 
+	            		<img src="<?php echo BASE_URL."public/img/vehiculos/".$this->dato->getPlaca()."_2.".$this->dato->getImagen2() ?>" class="img-responsive" alt="Image">
+	            		<a class="btn btn-danger btn-sm btn-block eliminarImagen" id="<?php echo $this->dato->getId() ?>" imagen="2">Eliminar Imagen</a>
+	            	<?php } ?>
+	            </div>
+        	</form>
+       </div>
+</div>
+<?php } ?>
 
 <?php if(isset($this->dato) && count($this->dato)){ ?>
 
@@ -226,167 +251,53 @@
 	  </div>
 </div>
 
-
-
 <?php } ?>
-<!--
-<div class="modal fade" id="modal-vacuna">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Agregar Vacuna</h4>
-			</div>
-			<div class="modal-body">
-				<form role="form" class="form-horizontal" method="post" enctype="multipart/form-data" action="<?php echo BASE_URL.'mascota/agregarVacuna/' ?>" id="form-vacuna">
-					<input type="hidden" name="mascota" value="<?php if(isset($this->dato)){ echo $this->dato->getId();} ?>">
-					<div class="form-group">
-						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Vacuna: </label>
-						<div class="col-xs-12 col-sm-9 col-lg-9">
-							<?php echo $this->combobox("vacuna", "Seleccione...", $this->vacunas, "", "getId", "getDescripcion", "class='form-control required show-tick' data-live-search='true' ","getDescripcion"); ?>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Fecha Program: </label>
-						<div class="col-xs-12 col-sm-9 col-lg-9">
-							<input name="fechaProg" value="" class="form-control fechadatepicker required" data-date-format="dd/mm/yyyy" placeholder="dd/mm/aaaa" />
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Observacion: </label>
-						<div class="col-xs-12 col-sm-9 col-lg-9">
-							<textarea class="form-control required" name="observacion"></textarea>
-						</div>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-				<button type="button" class="btn btn-primary" id="guardarVacuna" >Guardar</button>
-			</div>
-		</div>
-	</div>
-</div>
 
-<div class="modal fade" id="modal-servicio">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Agregar Servicio</h4>
-			</div>
-			<div class="modal-body">
-				<form role="form" class="form-horizontal" method="post" enctype="multipart/form-data" action="<?php echo BASE_URL.'mascota/agregarServicio/' ?>" id="form-servicio">
-					<input type="hidden" name="mascota" value="<?php if(isset($this->dato)){ echo $this->dato->getId();} ?>">
-					<div class="form-group">
-						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Servicio: </label>
-						<div class="col-xs-12 col-sm-9 col-lg-9">
-							<?php echo $this->combobox("servicio", "Seleccione...", $this->servicios, "", "getId", "getDescripcion", "class='form-control required show-tick' data-live-search='true' ","getDescripcion"); ?>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Fecha Program: </label>
-						<div class="col-xs-12 col-sm-9 col-lg-9">
-							<input name="fechaProg" value="" class="form-control fechadatepicker required" data-date-format="dd/mm/yyyy" placeholder="dd/mm/aaaa" />
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Observacion: </label>
-						<div class="col-xs-12 col-sm-9 col-lg-9">
-							<textarea class="form-control required" name="observacion"></textarea>
-						</div>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-				<button type="button" class="btn btn-primary" id="guardarServicio" >Guardar</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="modal fade" id="modal-asignar-vacuna">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Fecha Vacuna</h4>
-			</div>
-			<div class="modal-body">
-				<form role="form" class="form-horizontal" method="post" enctype="multipart/form-data" action="<?php echo BASE_URL.'mascota/asignarVacuna/' ?>" id="form-vacunaF">
-					<input type="hidden" name="mascota" value="<?php if(isset($this->dato)){ echo $this->dato->getId();} ?>">
-					<input type="hidden" name="vacuna" value="" id="id-vacuna" >
-					<div class="form-group">
-						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Fecha: </label>
-						<div class="col-xs-12 col-sm-9 col-lg-9">
-							<input name="fechaRealVacuna" value="" class="form-control fechadatepicker required" data-date-format="dd/mm/yyyy" placeholder="dd/mm/aaaa" />
-						</div>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-				<button type="button" class="btn btn-primary" id="guardarVacunaF" >Guardar</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="modal fade" id="modal-asignar-servicio">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Fecha Servicio</h4>
-			</div>
-			<div class="modal-body">
-				<form role="form" class="form-horizontal" method="post" enctype="multipart/form-data" action="<?php echo BASE_URL.'mascota/asignarServicio/' ?>" id="form-servicioF">
-					<input type="hidden" name="mascota" value="<?php if(isset($this->dato)){ echo $this->dato->getId();} ?>">
-					<input type="hidden" name="servicio" value="" id="id-servicio" >
-					<div class="form-group">
-						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Fecha: </label>
-						<div class="col-xs-12 col-sm-9 col-lg-9">
-							<input name="fechaRealServicio" value="" class="form-control fechadatepicker required" data-date-format="dd/mm/yyyy" placeholder="dd/mm/aaaa" />
-						</div>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-				<button type="button" class="btn btn-primary" id="guardarServicioF" >Guardar</button>
-			</div>
-		</div>
-	</div>
-</div>
--->
 <script type="text/javascript">
 	jQuery(document).ready(function($) {
-		$('#vacuna').click(function(event) {
-			$('#modal-vacuna').modal();
-			$('#guardarVacuna').click(function(event) {
-				$('#form-vacuna').submit();
-			});		
-		});
-		$('#servicio').click(function(event) {
-			$('#modal-servicio').modal();
-			$('#guardarServicio').click(function(event) {
-				$('#form-servicio').submit();
-			});		
-		});
-		$(".asignarV").click(function(event) {
-			$("#id-vacuna").val($(this).attr('vacuna'));
-			$("#modal-asignar-vacuna").modal();
-			$('#guardarVacunaF').click(function(event) {
-				$('#form-vacunaF').submit();
-			});
-		});
-		$(".asignarS").click(function(event) {
-			$("#id-servicio").val($(this).attr('servicio'));
-			$("#modal-asignar-servicio").modal();
-			$('#guardarServicioF').click(function(event) {
-				$('#form-servicioF').submit();
-			});
-		});
+		
+		$("#subirImagen").click(function(event) {
+        if($("#formImagen input[name='imagen']").val() == '' || $("#formImagen select[name='tipoImagen']").val() == ''){
+            jError("Los Campos son Obligatorios","Error");
+            return;
+        }
+        var formData = new FormData($("#formImagen")[0]);
+        var url = BASE.url + 'vehiculo/subirImagen/';
+        var columna = '';
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: url,
+            data: formData, 
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                if(response.error && response.error != ""){
+                    alert(response.error);
+                    //jError(response.error,"Error");
+                }else{
+                	$("#formImagen input[name='imagen']").val("");
+                	$("#formImagen select[name='tipoImagen']").selectpicker('deselectAll');
+                    //$.each(response.datos, function(index, val) {
+                     
+                    //});
+                }
+            }
+        });
+    });
+    ///ELIMINAR ARCHIVOS///
+    $(".content").delegate('.eliminarImagen', 'click', function(event) {
+        var columna = "";
+        var id = $(this).attr('id');
+        var imagen = $(this).attr('imagen');
+        $.post(BASE.url + 'docente/eliminarArchivo/', {id:id, imagen:imagen}, function(response) {
+                $.each(response.datos, function(index, val) {
+                    columna += "<tr><td style='width: 500px'>"+val.tipo+"</td><td style='width: 300px'>"+val.fecha+"</td><td><a href='"+BASE.url+"public/files/docente/"+val.nombre+".pdf' target='_blank'><span class='glyphicon glyphicon-floppy-save' title='Ver Archivo'></span></a><a class ='eliminarArchivo' id="+val.id+"><span class='glyphicon glyphicon-trash' title='Eliminar Archivo'></span></a></td></tr>"
+                });
+                $('#tablaArchivo').html(columna);
+        },"json");
+    });
+    ///////////////////////
 	});
 </script>
