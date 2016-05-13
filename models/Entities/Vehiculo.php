@@ -197,6 +197,20 @@ function __construct() {}
      */
     private $mantenimientos;
 
+    /**
+     * @var integer
+     *
+     * @Column(name="imagen1", type="string", length=5,nullable=true)
+     */
+    private $imagen1;
+
+    /**
+     * @var integer
+     *
+     * @Column(name="imagen2", type="string", length=5,nullable=true)
+     */
+    private $imagen2;
+
     /** 
      * Set id
      *
@@ -726,6 +740,29 @@ function __construct() {}
         return $this->combustible;
     }
 
+    public function setImagen1($imagen1 = null)
+    {
+        $this->imagen1 = $imagen1;
+
+        return $this;
+    }
+
+    public function getImagen1()
+    {
+        return $this->imagen1;
+    }
+
+    public function setImagen2($imagen2 = null)
+    {
+        $this->imagen2 = $imagen2;
+
+        return $this;
+    }
+
+    public function getImagen2()
+    {
+        return $this->imagen2;
+    }
 
     public function getMantenimientos()
     {
