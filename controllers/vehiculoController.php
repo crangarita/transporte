@@ -17,11 +17,11 @@ class vehiculoController extends Controller
     {
         $this->_model = $this->loadModel($this->_presentRequest->getControlador());
 
-    	$this->_view->titulo = ucwords($this->_presentRequest->getControlador()).' :: Listado';
+        $this->_view->titulo = ucwords($this->_presentRequest->getControlador()).' :: Listado';
 
-    	$this->_view->datos = $this->_model->resultList();
+        $this->_view->datos = $this->_model->resultList();
 
-    	$this->_view->setJsP(array('dataTables/jquery.dataTables','dataTables/dataTables.bootstrap'));
+        $this->_view->setJsP(array('dataTables/jquery.dataTables','dataTables/dataTables.bootstrap'));
         $this->_view->setCssP(array('dataTables.bootstrap'));
 
         $this->_view->renderizar('index', ucwords(strtolower($this->_presentRequest->getControlador())));
@@ -31,7 +31,7 @@ class vehiculoController extends Controller
     {
         $this->_model = $this->loadModel($this->_presentRequest->getControlador());
 
-    	header('Content-type: application/json');
+        header('Content-type: application/json');
         
         $arrayRta = array('error'=>false);
 
@@ -49,7 +49,7 @@ class vehiculoController extends Controller
 
         $obj = $this->_model->get($this->getInt('id'));
         if(!$obj){
-        	$arrayRta['error'] = ' Elemento no existe';
+            $arrayRta['error'] = ' Elemento no existe';
             echo json_encode($arrayRta);
             exit; 
         }
@@ -58,28 +58,38 @@ class vehiculoController extends Controller
 
         $datos['Placa'] = $obj->getPlaca();
         $datos['Marca'] = $obj->getMarca();
-        $datos['Nummotor'] = $obj->getNummotor();
+        $datos['Numero Motor'] = $obj->getNummotor();
         $datos['Linea'] = $obj->getLinea();
-        $datos['Numchasis'] = $obj->getNumchasis();
-        $datos['Tipocarroceria'] = $obj->getTipocarroceria();
+        $datos['Numero Chasis'] = $obj->getNumchasis();
+        $datos['Tipo Carroceria'] = $obj->getTipocarroceria();
         $datos['Cilindraje'] = $obj->getCilindraje();
         $datos['Capacidad'] = $obj->getCapacidad();
         $datos['Area'] = $obj->getArea();
         $datos['Servicio'] = $obj->getServicio();
         $datos['Modelo'] = $obj->getModelo();
-        $datos['Numpuertas'] = $obj->getNumpuertas();
-        $datos['Numlicencia'] = $obj->getNumlicencia();
-        $datos['Numtarjoperacional'] = $obj->getNumtarjoperacional();
+        $datos['Numero Puertas'] = $obj->getNumpuertas();
+        $datos['Numero Licencia'] = $obj->getNumlicencia();
+        $datos['Numero Tarjeta Operacional'] = $obj->getNumtarjoperacional();
         $datos['Area'] = $obj->getArea();
         $datos['Servicio'] = $obj->getServicio();
-        $datos['Fecvenctarjoperacional'] = $obj->getFecvenctarjoperacional();
-        $datos['Fecvenctecnomecanico'] = $obj->getFecvenctecnomecanico();
+        if($obj->getFecvenctarjoperacional() != null){
+            $datos['Fecha Vencimiento Tarjeta Operacional'] = $obj->getFecvenctarjoperacional()->format("d/m/Y");
+        }else{
+            $datos['Fecha Vencimiento Tarjeta Operacional'] = "";
+        }
+        if($obj->getFecvenctecnomecanico() != null){
+            $datos['Fecha Vencimiento Tecno-Mecanica'] = $obj->getFecvenctecnomecanico()->format("d/m/Y");
+        }else{
+            $datos['Fecha Vencimiento Tecno-Mecanica'] = "";
+        }
         $datos['Observacion'] = $obj->getObservacion();
 
         $datos['Radio'] = $obj->getRadio()->getDescripcion();
         $datos['Marca'] = $obj->getMarca()->getDescripcion();
         $datos['Tipo'] = $obj->getTipo()->getDescripcion();
-        $datos['Tipocombustible'] = $obj->getTipocombustible()->getDescripcion();
+        if($obj->getCombustible() != null){
+            $datos['Tipo Combustible'] = $obj->getCombustible()->getDescripcion();
+        }
 
 
         $arrayRta['datos'] = $datos;
@@ -89,23 +99,23 @@ class vehiculoController extends Controller
 
     public function agregar()
     {
-    	$this->_view->titulo = ucwords($this->_presentRequest->getControlador()).' :: Agregar';
+        $this->_view->titulo = ucwords($this->_presentRequest->getControlador()).' :: Agregar';
         
-		$this->_view->marcas = $this->_marca->resultList();
+        $this->_view->marcas = $this->_marca->resultList();
         $this->_view->tipos = $this->_tipo->resultList();
         $this->_view->radios = $this->_radioaccion->resultList();
         $this->_view->tipocombustibles = $this->_tipocombustible->resultList();
         /*
         $this->_view->categorias = $this->_categoria->resultList();
         $this->_view->sectores = $this->_sector->resultList();
-		*/
+        */
         //$this->_view->clientes = $this->_cliente->findBy(array('veterinario' => Session::get('usuario')));
 
-    	if($_POST){
-        	$this->_model = $this->loadModel($this->_presentRequest->getControlador());
+        if($_POST){
+            $this->_model = $this->loadModel($this->_presentRequest->getControlador());
             $this->obj();
         }
-    	
+        
         $this->_view->renderizar('obj', ucwords(strtolower($this->_presentRequest->getControlador())));
 
     }
@@ -230,107 +240,95 @@ class vehiculoController extends Controller
         $this->redireccionar($this->_presentRequest->getControlador().'/');
     }
 
+    public function subirImagen(){
 
+        $id = $this->getInt("id");
+        $tipo = $this->getInt("tipoImagen");
+        $this->_model = $this->loadModel($this->_presentRequest->getControlador());
+        $this->_model->get($id);
+        $metodo = "getImagen".$tipo;
 
+        if($this->_model->getInstance()->$metodo()){
+           $array["error"] = "La Imagen Número ".$tipo." ya Existe";
+            echo (json_encode($array));
+            exit; 
+        }
 
+        if ($_FILES['imagen']['name'] != "") {
+
+            $array = array();
+
+            $configSubir = array();
+            $configRender = array();
+
+            $configSubir['allowed_types'] = 'jpg|png|jpeg';
+            $configSubir['file_name'] = $this->_model->getInstance()->getPlaca()."_".$tipo;
+
+            $configRender['new_image']=ROOT.'public'.DS.'img'.DS.'vehiculos'.DS;
+            $configRender['width']=600;//245
+            $configRender['height']=388;//184
+
+            /*if($this->_model->getInstance()->getImagen()){
+                unlink(ROOT.'public'.DS.'img'.DS.'nosotros'.DS.$empresa.'.'.$this->_model->getInstance()->getImagen());
+            }*/
+
+            $rta = $this->subirImg($configSubir,$configRender,'imagen');
+
+            if($rta){
+                $array["error"] = $rta;
+                echo (json_encode($array));
+                exit;
+            }
+
+            $nombreImg = $_FILES['imagen']['name'];
+            $extTmp = explode(".", $nombreImg);
+            $ext = $extTmp[count($extTmp)-1];
+
+            $metodo = "setImagen".$tipo;
+            $this->_model->getInstance()->$metodo($ext);
+            $this->_model->update();
+
+        }
+        echo (json_encode($array));
+    }
+
+    public function eliminarImagen(){
+        $array = array();
+        $id = $this->getInt('id');
+        $imagen = $this->getInt('imagen');
+        $this->_model = $this->loadModel($this->_presentRequest->getControlador());
+        $this->_model->get($id);
+        $metodoGet = "getImagen".$imagen;
+        $metodoSet = "setImagen".$imagen;
+        if($this->_model->getInstance()){
+            $nombreImagen = $this->_model->getInstance()->getPlaca()."_".$imagen;
+            try {
+                unlink(ROOT."public".DS."img".DS."vehiculos".DS.$nombreArchivo.$this->_model->getInstance()->$metodo());
+                $this->_model->getInstance()->$metodoSet("");
+                $this->_model->update();
+            } catch (Exception $e) {
+                $array["error"] = "Error";
+                echo (json_encode($array));
+                exit; 
+                ////
+            }
+        }else{
+            $array["error"] = "Error";
+            echo (json_encode($array));
+            exit; 
+        }
+        echo (json_encode($array));
+    }
     
-
-    public function agregarVacuna(){
-
-        $this->_vacunacion->getInstance()->setMascota($this->_mascota->get($this->getInt("mascota")));
-        $this->_vacunacion->getInstance()->setVacuna($this->_vacuna->get($this->getInt("vacuna")));
-        $this->_vacunacion->getInstance()->setFechaProg(new \DateTime($this->getFecha($this->getTexto('fechaProg'))));
-        $this->_vacunacion->getInstance()->setObservacion($this->getTexto('observacion'));
-        try {
-            $this->_vacunacion->save();
-            Session::set('mensaje','La <b>Vacuna</b> se Registro Correctamente.');
-        } catch (Exception $e) {
-            Session::set('error','Error en el Proceso.');
-        }
-        $this->redireccionar($this->_presentRequest->getControlador().'/actualizar/'.$this->_mascota->getInstance()->getId()."/");
-
-    }
-
-    public function agregarServicio(){
-
-        $this->_servicioMascota->getInstance()->setMascota($this->_mascota->get($this->getInt("mascota")));
-        $this->_servicioMascota->getInstance()->setServicio($this->_servicio->get($this->getInt("servicio")));
-        $this->_servicioMascota->getInstance()->setFechaProg(new \DateTime($this->getFecha($this->getTexto('fechaProg'))));
-        $this->_servicioMascota->getInstance()->setObservacion($this->getTexto('observacion'));
-        try {
-            $this->_servicioMascota->save();
-            Session::set('mensaje','El <b>Servicio</b> se Registro Correctamente.');
-        } catch (Exception $e) {
-            Session::set('error','Error en el Proceso.');            
-        }
-        $this->redireccionar($this->_presentRequest->getControlador().'/actualizar/'.$this->_mascota->getInstance()->getId()."/");
-
-    }
-
-    public function asignarVacuna(){
-
-        $this->_vacunacion->get($this->getInt("vacuna"));
-        $this->_vacunacion->getInstance()->setFechaReal(new \DateTime($this->getFecha('fechaRealVacuna')));
-        try {
-            $this->_vacunacion->update();
-            Session::set('mensaje','La <b>Vacuna</b> se Asigno Correctamente.');
-        } catch (Exception $e) {
-            Session::set('error','Error en el Proceso.');          
-        }
-        $this->redireccionar($this->_presentRequest->getControlador().'/actualizar/'.$this->getInt("mascota")."/");
-
-    }
-
-    public function asignarServicio(){
-
-        $this->_servicioMascota->get($this->getInt("servicio"));
-        $this->_servicioMascota->getInstance()->setFechaReal(new \DateTime($this->getFecha('fechaRealServicio')));
-        try {
-            $this->_servicioMascota->update();
-            Session::set('mensaje','El <b>Servicio</b> se Asigno Correctamente.');
-        } catch (Exception $e) {
-            Session::set('error','Error en el Proceso.');   
-        }
-        $this->redireccionar($this->_presentRequest->getControlador().'/actualizar/'.$this->getInt("mascota")."/");
-
-    }
-
-    public function desactivarVacuna($mascota=0,$vacuna=0){
-
-        $this->_vacunacion->get($vacuna);
-        try {
-            $this->_vacunacion->delete();
-            Session::set('mensaje','La <b>Vacuna</b> se Elimino Correctamente.');
-        } catch (Exception $e) {
-            Session::set('error','Error en el Proceso.');
-        }
-        $this->redireccionar($this->_presentRequest->getControlador().'/actualizar/'.$mascota."/");
-
-    }
-
-    public function desactivarServicio($mascota=0,$servicio=0){
-
-        $this->_servicioMascota->get($servicio);
-        try {
-            $this->_servicioMascota->delete();
-            Session::set('mensaje','La <b>Vacuna</b> se Elimino Correctamente.');
-        } catch (Exception $e) {
-            Session::set('error','Error en el Proceso.');
-        }
-        $this->redireccionar($this->_presentRequest->getControlador().'/actualizar/'.$mascota."/");
+    public function fichaVehiculo($placa=""){
+        //$this->_model->get($this->filtrarInt($id));
         
+        $this->getLibrary('phpjasperxml/jasperpdf');
+        
+        $pdf = new Jasperpdf();
+        
+        $pdf->generarFicha($placa);
     }
-	
-	
-	public function fichaVehiculo($placa=""){
-		//$this->_model->get($this->filtrarInt($id));
-		
-		$this->getLibrary('phpjasperxml/jasperpdf');
-		
-		$pdf = new Jasperpdf();
-		
-		$pdf->generarFicha($placa);
-	}
 
 }
 
