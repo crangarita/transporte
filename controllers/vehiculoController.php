@@ -10,16 +10,7 @@ class vehiculoController extends Controller
         $this->_marca = $this->loadModel('marca');
         $this->_tipo = $this->loadModel('tipo');
         $this->_tipocombustible = $this->loadModel('tipocombustible');
-        /*
-        $this->_estado = $this->loadModel('estado');
-        $this->_categoria = $this->loadModel('categoria');
-        $this->_sector = $this->loadModel('sector');
-        /*
-        $this->_vacuna = $this->loadModel('vacuna');
-        $this->_servicio = $this->loadModel('servicio');
-        $this->_vacunacion = $this->loadModel('vacunacion');
-        $this->_servicioMascota = $this->loadModel('serviciomascota');
-        */
+        
     }
     
     public function index()
