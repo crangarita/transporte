@@ -154,6 +154,7 @@ class vehiculoController extends Controller
             $this->obj(false);
         }
 
+        $this->_view->metodo = "editar";
         $this->_view->renderizar('obj', ucwords(strtolower($this->_presentRequest->getControlador())));
     }
 
@@ -198,7 +199,34 @@ class vehiculoController extends Controller
 
         $this->_model->getInstance()->setObservacion($this->getTexto('observacion'));
 
+        for ($i=1; $i <= 2; $i++) { 
+            
+            if ($_FILES['imagen'.$i]['tmp_name']){
 
+                $configSubir = array();
+                $configRender = array();
+
+                $configSubir['allowed_types'] = 'jpg|png|jpeg';
+                $configSubir['file_name'] = $this->_model->getInstance()->getPlaca()."_".$i;
+
+                $configRender['new_image']=ROOT.'public'.DS.'img'.DS.'vehiculos'.DS;
+                $configRender['width']=600;//245
+                $configRender['height']=388;//184
+
+                /*if($this->_model->getInstance()->getImagen()){
+                    unlink(ROOT.'public'.DS.'img'.DS.'nosotros'.DS.$empresa.'.'.$this->_model->getInstance()->getImagen());
+                }*/
+
+                $rta = $this->subirImg($configSubir,$configRender,'imagen'.$i);
+            
+                if($rta){
+                    Session::set('error',$rta.'</b>');
+                    $this->redireccionar("vehiculo");
+                    exit;
+                }
+
+            }
+        }
         
         if($new){
             $this->_model->save(); 

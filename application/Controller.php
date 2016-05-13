@@ -419,8 +419,83 @@ function arrayVacuum($array='') {
     return $newArray;
 }
 
+public function subirImg($configSubir,$configRender,$img){
+
+        ///SE CARGA LA LIBRERIA PARA SUBIR LA IMAGEN///
+        $this->getLibrary('img/Upload');
+        ///SE CREA EL OBJETO///
+        $upload = new Upload($configSubir);
+        ///SI OCURRE ALGUN ERROR///
+        if (!$upload->do_upload($img)){
+            return $upload->error;
+        ///SI TODO SE PROCESA BIEN///
+        }else{
+           ///SE RECORRE EL RESULTADO/// 
+         foreach ($upload->data() as $item => $value){
+            ///SE GUARDAN LAS VARIABLES///
+            if($item =='file_path'){                  
+                $path = $value; 
+            }elseif($item =='file_name'){              
+                $name = $value;
+            }elseif($item =='image_width'){
+                $width = $value;                     
+            }elseif(($item =='image_height')){                      
+                $height = $value;
+            }
+            //////////////////////////////
+            
+        }
+            ////////////////////////////
+
+        ///SE REDIMENSIONA///
+        $this->resizeImg($path,$name,$configRender);
+        /////////////////////
+
+    } 
+
+}
+
+    public function resizeImg($path,$name,$configRender){   
+
+        ///SE CREA UN ARRAY CON EL PATH///
+        $upload = explode('/',$path); 
+        ///SE CAPTURA EL TAMAÑO DEL ARRAY///
+        $size = sizeof($upload); 
+        ///SE INICIA LA VARIBLE CARPETA FINAL///
+        $final_folder = '';
+
+        ///SE RECORRE EL UPLOAD///
+        for($i=0; $i<($size-2); $i++){ 
+            ///SE GUARDA LA RUTA DEL ARCHIVO///        
+            $final_folder .= $upload[$i].DS;
+            ///////////////////////////////////
+        }
+        //////////////////////////
+
+        $configRender['source_image']=$path.$name;
+
+        ///SE CARGA LA LIBRERIA///
+        $this->getLibrary('img/Image_lib');
+        ///SE CREA EL OBJETO///
+        $imagen = new Image_lib($configRender);
+
+        ///SE VALIDA ERRORES///
+        if (!$imagen->resize()){
+            echo $imagen->display_errors();
+        }
+        ///////////////////////
+
+        ///SE RENDERIZA Y SE GUARDA///
+        $imagen->resize();
+        //////////////////////////////
+
+        ///SE ELIMINA LA IMAGEN TEMPORAL///
+        unlink($path.$name);
+        /////////////////////////////////////
+    
 }
 
 
+}
 
 ?>

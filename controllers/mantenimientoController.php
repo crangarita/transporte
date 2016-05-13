@@ -85,29 +85,6 @@ class mantenimientoController extends Controller
             WHERE f.id =:idFrec", array('idFrec' => '2'));
         $this->_view->vehiculo = $this->_vehiculo->get($id);
 
-        /*
-        $this->_view->itemfrecuencias = 
-
-         $this->_view->estudiantes = $this->_asisEstudiante->dql("SELECT a FROM Entities\AsisEstudiante a 
-            JOIN a.estudiante est where a.numAsistencia =:numAsistencia 
-            ORDER BY est.estapellido1, est.estapellido2, est.estnombre1, est.estnombre2 ", 
-            array('numAsistencia' => $this->_asistencia->getInstance()->getNumero()));
-           
-
-        foreach ($this->_itemfrecuencia->resultList() as $key => $dato) {
-
-        }
-        */
-        /*
-        $this->_view->tipos = $this->_tipo->resultList();
-        $this->_view->radios = $this->_radioaccion->resultList();
-        $this->_view->tipocombustibles = $this->_tipocombustible->resultList();
-        /*
-        $this->_view->categorias = $this->_categoria->resultList();
-        $this->_view->sectores = $this->_sector->resultList();
-        */
-        //$this->_view->clientes = $this->_cliente->findBy(array('veterinario' => Session::get('usuario')));
-
         if($_POST){
             $this->_model = $this->loadModel($this->_presentRequest->getControlador());
             $this->obj();
@@ -131,6 +108,11 @@ class mantenimientoController extends Controller
         $this->_model->getInstance()->setFecha(new \DateTime($this->getFecha($this->getTexto('fecha'))));
         $this->_model->getInstance()->setObservaciones($this->getTexto('observacion'));
         $this->_model->getInstance()->setTipo($this->getInt('tipo'));
+        if($this->getInt('tipo') == 2){
+            $this->_model->getInstance()->setFrecuencia($this->_frecuencia->get(1);    
+        }else{
+            $this->_model->getInstance()->setFrecuencia($this->_frecuencia->get($this->getInt('frecuencia')));
+        }
         $this->_model->getInstance()->setFrecuencia($this->_frecuencia->get($this->getInt('frecuencia')));
         $this->_model->getInstance()->setRevisor($this->getTexto('revisor'));
         $this->_model->getInstance()->setConductor($this->getTexto('conductor'));

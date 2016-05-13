@@ -154,8 +154,23 @@
                     		<?php if(isset($this->dato)){ echo $this->dato->getObservacion();} ?>
                     	</textarea>
                     </div>
-                </div>
+            </div>
 
+            <?php if($this->metodo == "editar"){ ?>
+            <div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Imagen 1: </label>
+	            <div class="col-xs-12 col-sm-9 col-lg-9">
+                	<input type="file" name="imagen1" class="form-control"  />
+                </div>
+            </div>
+
+            <div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Imagen 2: </label>
+	            <div class="col-xs-12 col-sm-9 col-lg-9">
+                	<input type="file" name="imagen2" class="form-control"  />
+                </div>
+            </div>
+            <?php } ?>
 
 			<p class="text-right comentario">
 				Los campos marcados con <span class="span">*</span> son obligatorios.
