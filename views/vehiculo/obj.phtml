@@ -190,19 +190,27 @@
 	            <div class="form-group col-xs-12">
 	                <a class="btn btn-primary btn-sm btn-block" id="subirImagen">Subir Imagen</a>
 	            </div>
-	            <div class="form-group col-xs-6">
-	            	<?php if($this->dato->getImagen1()){ ?>
-	            		<label>Imagen 1 </label> 
-	            		<img src="<?php echo BASE_URL."public/img/vehiculos/".$this->dato->getPlaca()."_1.".$this->dato->getImagen1() ?>" class="img-responsive" alt="Image">
-	            		<a class="btn btn-danger btn-sm btn-block eliminarImagen" id="<?php echo $this->dato->getId() ?>" imagen="1">Eliminar Imagen</a>
-	            	<?php } ?>
+	            <?php if(!$this->dato->getImagen1() && !$this->dato->getImagen2()){ ?>
+	            <div class="form-group col-xs-12">
+	            	<div class="alert alert-warning">El ve&iacute;iculo no tiene imagenes registradas...</div>
 	            </div>
-	            <div class="form-group col-xs-6">
-	            	<?php if($this->dato->getImagen2()){ ?>
-	            		<label>Imagen 2 </label> 
-	            		<img src="<?php echo BASE_URL."public/img/vehiculos/".$this->dato->getPlaca()."_2.".$this->dato->getImagen2() ?>" class="img-responsive" alt="Image">
-	            		<a class="btn btn-danger btn-sm btn-block eliminarImagen" id="<?php echo $this->dato->getId() ?>" imagen="2">Eliminar Imagen</a>
-	            	<?php } ?>
+	            <?php } ?>
+
+	            <div id="divImagenes">
+		            <?php if($this->dato->getImagen1()){ ?>
+		            	<div class="form-group col-xs-6">
+		            		<label>Imagen 1 </label> 
+		            		<img src="<?php echo BASE_URL."public/img/vehiculos/".$this->dato->getPlaca()."_1.".$this->dato->getImagen1() ?>" class="img-responsive" alt="Image">
+		            		<a class="btn btn-danger btn-sm btn-block eliminarImagen" id="<?php echo $this->dato->getId() ?>" imagen="1">Eliminar Imagen</a>
+		            	</div>
+		            <?php } ?>
+		            <?php if($this->dato->getImagen2()){ ?>
+		            	<div class="form-group col-xs-6">
+		            		<label>Imagen 2 </label> 
+		            		<img src="<?php echo BASE_URL."public/img/vehiculos/".$this->dato->getPlaca()."_2.".$this->dato->getImagen2() ?>" class="img-responsive" alt="Image">
+		            		<a class="btn btn-danger btn-sm btn-block eliminarImagen" id="<?php echo $this->dato->getId() ?>" imagen="2">Eliminar Imagen</a>
+		            	</div>
+		            <?php } ?>
 	            </div>
         	</form>
        </div>
@@ -258,7 +266,8 @@
 		
 		$("#subirImagen").click(function(event) {
         if($("#formImagen input[name='imagen']").val() == '' || $("#formImagen select[name='tipoImagen']").val() == ''){
-            jError("Los Campos son Obligatorios","Error");
+            //jError("Los Campos son Obligatorios","Error");
+            alert("Los Campos son Obligatorios");
             return;
         }
         var formData = new FormData($("#formImagen")[0]);
@@ -279,23 +288,28 @@
                 }else{
                 	$("#formImagen input[name='imagen']").val("");
                 	$("#formImagen select[name='tipoImagen']").selectpicker('deselectAll');
-                    //$.each(response.datos, function(index, val) {
-                     
-                    //});
+
+                	if(response.imagen1){
+                		columna += "<div class='form-group col-xs-6'><label>Imagen 1</label><img src='"+BASE.url+"public/img/vehiculos/"+response.placa+"_1."+response.imagen1+"'class='img-responsive' alt='Image'><a class='btn btn-danger btn-sm btn-block eliminarImagen' id='"+response.id+"' imagen='1'>Eliminar Imagen</a></div>";
+                	}
+
+                	if(response.imagen2){
+                		columna += "<div class='form-group col-xs-6'><label>Imagen 2</label><img src='"+BASE.url+"public/img/vehiculos/"+response.placa+"_2."+response.imagen2+"'class='img-responsive' alt='Image'><a class='btn btn-danger btn-sm btn-block eliminarImagen' id='"+response.id+"' imagen='2'>Eliminar Imagen</a></div>"
+                	}
+	            	
+                	$("#divImagenes").html(columna);
+
                 }
             }
         });
     });
     ///ELIMINAR ARCHIVOS///
-    $(".content").delegate('.eliminarImagen', 'click', function(event) {
+    $(".panel-body").delegate('.eliminarImagen', 'click', function(event) {
         var columna = "";
         var id = $(this).attr('id');
         var imagen = $(this).attr('imagen');
-        $.post(BASE.url + 'docente/eliminarArchivo/', {id:id, imagen:imagen}, function(response) {
-                $.each(response.datos, function(index, val) {
-                    columna += "<tr><td style='width: 500px'>"+val.tipo+"</td><td style='width: 300px'>"+val.fecha+"</td><td><a href='"+BASE.url+"public/files/docente/"+val.nombre+".pdf' target='_blank'><span class='glyphicon glyphicon-floppy-save' title='Ver Archivo'></span></a><a class ='eliminarArchivo' id="+val.id+"><span class='glyphicon glyphicon-trash' title='Eliminar Archivo'></span></a></td></tr>"
-                });
-                $('#tablaArchivo').html(columna);
+        $.post(BASE.url + 'vehiculo/eliminarImagen/', {id:id, imagen:imagen}, function(response) {
+                location.reload();
         },"json");
     });
     ///////////////////////

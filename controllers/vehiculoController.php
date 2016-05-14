@@ -288,6 +288,11 @@ class vehiculoController extends Controller
             $this->_model->getInstance()->$metodo($ext);
             $this->_model->update();
 
+            $array["id"] = $this->_model->getInstance()->getId();
+            $array["placa"] = $this->_model->getInstance()->getPlaca();
+            $array["imagen1"] = $this->_model->getInstance()->getImagen1();
+            $array["imagen2"] = $this->_model->getInstance()->getImagen2();
+
         }
         echo (json_encode($array));
     }
@@ -303,7 +308,7 @@ class vehiculoController extends Controller
         if($this->_model->getInstance()){
             $nombreImagen = $this->_model->getInstance()->getPlaca()."_".$imagen;
             try {
-                unlink(ROOT."public".DS."img".DS."vehiculos".DS.$nombreArchivo.$this->_model->getInstance()->$metodo());
+                unlink(ROOT."public".DS."img".DS."vehiculos".DS.$nombreImagen.".".$this->_model->getInstance()->$metodoGet());
                 $this->_model->getInstance()->$metodoSet("");
                 $this->_model->update();
             } catch (Exception $e) {
