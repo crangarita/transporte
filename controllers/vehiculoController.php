@@ -84,13 +84,26 @@ class vehiculoController extends Controller
         }
         $datos['Observacion'] = $obj->getObservacion();
 
-        $datos['Radio'] = $obj->getRadio()->getDescripcion();
-        $datos['Marca'] = $obj->getMarca()->getDescripcion();
-        $datos['Tipo'] = $obj->getTipo()->getDescripcion();
+        if($obj->getRadio() != null){
+            $datos['Radio'] = $obj->getRadio()->getDescripcion();
+        }else{
+            $datos['Radio'] = "";
+        }
+        if($obj->getMarca() != null){
+            $datos['Marca'] = $obj->getMarca()->getDescripcion();
+        }else{
+            $datos['Marca'] = "";
+        }
+        if($obj->getTipo() != null){
+            $datos['Tipo'] = $obj->getTipo()->getDescripcion();
+        }else{
+            $datos['Tipo'] = "";
+        }
         if($obj->getCombustible() != null){
             $datos['Tipo Combustible'] = $obj->getCombustible()->getDescripcion();
+        }else{
+            $datos['Tipo Combustible'] = "";
         }
-
 
         $arrayRta['datos'] = $datos;
         echo json_encode($arrayRta);
@@ -105,12 +118,7 @@ class vehiculoController extends Controller
         $this->_view->tipos = $this->_tipo->resultList();
         $this->_view->radios = $this->_radioaccion->resultList();
         $this->_view->tipocombustibles = $this->_tipocombustible->resultList();
-        /*
-        $this->_view->categorias = $this->_categoria->resultList();
-        $this->_view->sectores = $this->_sector->resultList();
-        */
-        //$this->_view->clientes = $this->_cliente->findBy(array('veterinario' => Session::get('usuario')));
-
+        
         if($_POST){
             $this->_model = $this->loadModel($this->_presentRequest->getControlador());
             $this->obj();
@@ -130,12 +138,6 @@ class vehiculoController extends Controller
         $this->_view->tipos = $this->_tipo->resultList();
         $this->_view->radios = $this->_radioaccion->resultList();
         $this->_view->tipocombustibles = $this->_tipocombustible->resultList();
-
-
-        //$this->_view->razas = $this->_raza->resultList();
-        //$this->_view->clientes = $this->_cliente->resultList();
-        //$this->_view->vacunas = $this->_vacuna->findBy(array('veterinario' => Session::get('usuario')));
-        //$this->_view->servicios = $this->_servicio->findBy(array('veterinario' => Session::get('usuario')));
 
         if($this->filtrarInt($id)<1){
             Session::set('error','Registro No Encontrado.');
@@ -161,14 +163,13 @@ class vehiculoController extends Controller
 
     private function obj($new = true)
     {
-        //$arrayTexto = array('nombre', 'fechaNac', 'descripcion');
-        //$arrayInt = array('raza', 'cliente');
-        //$rta = $this->validarArrays($arrayTexto,$arrayInt);
-        /*if($rta){
+        $arrayTexto = array('placa');
+        $rta = $this->validarArrays($arrayTexto);
+        if($rta){
             Session::set('error','Falto digitar o seleccionar <b>'.$rta.'</b>');
             $this->redireccionar($this->_presentRequest->getUrl());
             exit;  
-        }*/
+        }
 
         $this->_model->getInstance()->setPlaca($this->getTexto('placa'));
         $this->_model->getInstance()->setMarca($this->getTexto('marca'));
@@ -193,42 +194,21 @@ class vehiculoController extends Controller
         $this->_model->getInstance()->setFecvenctarjoperacional(new \DateTime($this->getFecha($this->getTexto('fecvenctarjoperacional'))));
         $this->_model->getInstance()->setFecvenctecnomecanico(new \DateTime($this->getFecha($this->getTexto('fecvenctecnomecanico'))));
 
-        $this->_model->getInstance()->setRadio($this->_radioaccion->get($this->getInt('radio')));
-        $this->_model->getInstance()->setMarca($this->_marca->get($this->getInt('marca')));
-        $this->_model->getInstance()->setTipo($this->_tipo->get($this->getInt('tipo')));
-        $this->_model->getInstance()->setCombustible($this->_tipocombustible->get($this->getInt('tipocombustible')));
+        if($this->getInt('radio')){
+            $this->_model->getInstance()->setRadio($this->_radioaccion->get($this->getInt('radio')));
+        }
+        if($this->getInt('marca')){
+            $this->_model->getInstance()->setMarca($this->_marca->get($this->getInt('marca')));
+        }
+        if($this->getInt('tipo')){
+            $this->_model->getInstance()->setTipo($this->_tipo->get($this->getInt('tipo')));
+        }
+        if($this->getInt('tipocombustible')){
+            $this->_model->getInstance()->setCombustible($this->_tipocombustible->get($this->getInt('tipocombustible')));
+        }
 
         $this->_model->getInstance()->setObservacion($this->getTexto('observacion'));
 
-        for ($i=1; $i <= 2; $i++) { 
-            
-            if ($_FILES['imagen'.$i]['tmp_name']){
-
-                $configSubir = array();
-                $configRender = array();
-
-                $configSubir['allowed_types'] = 'jpg|png|jpeg';
-                $configSubir['file_name'] = $this->_model->getInstance()->getPlaca()."_".$i;
-
-                $configRender['new_image']=ROOT.'public'.DS.'img'.DS.'vehiculos'.DS;
-                $configRender['width']=600;//245
-                $configRender['height']=388;//184
-
-                /*if($this->_model->getInstance()->getImagen()){
-                    unlink(ROOT.'public'.DS.'img'.DS.'nosotros'.DS.$empresa.'.'.$this->_model->getInstance()->getImagen());
-                }*/
-
-                $rta = $this->subirImg($configSubir,$configRender,'imagen'.$i);
-            
-                if($rta){
-                    Session::set('error',$rta.'</b>');
-                    $this->redireccionar("vehiculo");
-                    exit;
-                }
-
-            }
-        }
-        
         if($new){
             $this->_model->save(); 
             Session::set('mensaje','Registro Creado con Exito.');
@@ -267,10 +247,6 @@ class vehiculoController extends Controller
             $configRender['new_image']=ROOT.'public'.DS.'img'.DS.'vehiculos'.DS;
             $configRender['width']=600;//245
             $configRender['height']=388;//184
-
-            /*if($this->_model->getInstance()->getImagen()){
-                unlink(ROOT.'public'.DS.'img'.DS.'nosotros'.DS.$empresa.'.'.$this->_model->getInstance()->getImagen());
-            }*/
 
             $rta = $this->subirImg($configSubir,$configRender,'imagen');
 
@@ -315,7 +291,6 @@ class vehiculoController extends Controller
                 $array["error"] = "Error";
                 echo (json_encode($array));
                 exit; 
-                ////
             }
         }else{
             $array["error"] = "Error";
@@ -326,7 +301,6 @@ class vehiculoController extends Controller
     }
     
     public function fichaVehiculo($placa=""){
-        //$this->_model->get($this->filtrarInt($id));
         
         $this->getLibrary('phpjasperxml/jasperpdf');
         
