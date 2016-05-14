@@ -109,7 +109,7 @@ class mantenimientoController extends Controller
         $this->_model->getInstance()->setObservaciones($this->getTexto('observacion'));
         $this->_model->getInstance()->setTipo($this->getInt('tipo'));
         if($this->getInt('tipo') == 2){
-            $this->_model->getInstance()->setFrecuencia($this->_frecuencia->get(1);    
+            $this->_model->getInstance()->setFrecuencia($this->_frecuencia->get(1));    
         }else{
             $this->_model->getInstance()->setFrecuencia($this->_frecuencia->get($this->getInt('frecuencia')));
         }
